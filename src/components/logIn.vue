@@ -5,6 +5,10 @@
       <mu-text-field v-model.trim="uName" label="user name" labelFloat fullWidth :errorText="uNameERR" @input="checkName" @blur="checkName"/>
       <mu-text-field v-model.trim="uPwd" label="password" type="password" labelFloat fullWidth :errorText="uPwdERR"  @input="checkPwd" @blur="checkPwd"/>
     </div>
+    <p class="tips">
+      <mu-icon value="info" size="13"/>
+      You have no account? Click <router-link to="/signUp">here</router-link> to sign up.
+    </p>
     <router-link to="/todo"><mu-raised-button label="log in" class="log-in-btn" primary/></router-link>
   </div>
 </template>
@@ -47,4 +51,9 @@ export default {
     line-height 60px
   .text-area
     margin-top -30px
+  .tips
+    margin-bottom 10px
+    font-size 13px
+    text-align left
+    color #757575
 </style>

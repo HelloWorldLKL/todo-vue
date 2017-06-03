@@ -6,7 +6,7 @@
       <mu-text-field v-model.trim="uPwd1" label="password" type="password" labelFloat fullWidth :errorText="uPwd1ERR"  @input="checkPwd1" @blur="checkPwd1"/>
       <mu-text-field v-model.trim="uPwd2" label="verify password" type="password" labelFloat fullWidth :errorText="uPwd2ERR"  @input="checkPwd2" @blur="checkPwd2"/>
     </div>
-    <router-link to="/todo"><mu-raised-button label="sign up" class="sign-up-btn" primary/></router-link>
+    <router-link to="/logIn"><mu-raised-button label="sign up" class="sign-up-btn" primary/></router-link>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <mu-toast v-if="toast" message="Ah... It's empty" @close="hideToast" />
     <mu-list>
       <mu-list-item>
-        <mu-text-field label="New Todo" labelFloat fullWidth v-model.trim="newTodo" @keyup.enter.native="addNewTodo"/>
+        <mu-text-field label="New Todo" labelFloat fullWidth v-model.trim="newTodo" @keyup.enter.native="addNewTodo" />
       </mu-list-item>
     </mu-list>
     <mu-divider/>
@@ -12,9 +12,15 @@
       <transition-group name="item" tag="ul">
         <mu-list-item v-for="(item, index) in todoList" :key="index" disableRipple @click="handleToggle(item)" :title="item.info" class="todo-item" :class="{'todo-item-complete':item.complete}">
           <mu-checkbox v-model="item.complete" slot="left" />
-          <mu-icon-button icon="delete" slot="right" @click.stop="deleteTodo(index)"/>
+          <mu-icon-button icon="delete" slot="right" @click.stop="deleteTodo(index)" />
         </mu-list-item>
       </transition-group>
+      <transition name="slide" mode="in-out">
+        <div class="nothing" v-if="todoList.length === 0">
+          <mu-icon value="sentiment_very_satisfied" :size="36" />
+          <span style="font-weight: 100">Nothing Here Now~</span>
+        </div>
+      </transition>
     </mu-list>
   </div>
 </template>
@@ -69,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .todo
   text-align left
   .todo-list
@@ -78,9 +84,14 @@ export default {
     .todo-item
       transition all .4s
     .todo-item-complete
-      .mu-item-title
+      .mu-item
+        color #9e9e9e
         font-weight 200
         text-decoration line-through
+    .nothing
+      padding-left 30px
+      color #676767
+      font-size 36px
 .item-enter
   opacity 0
   transform translateX(100px)
@@ -93,4 +104,11 @@ export default {
   position absolute
 .item-move
   transition all 1s
+.slide-enter-active
+  transition all .5s ease
+.slide-leave-active
+  transition all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
+.slide-enter, .slide-leave-active
+  transform translateX(10px)
+  opacity 0
 </style>
