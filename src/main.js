@@ -9,6 +9,7 @@ import 'muse-ui/dist/theme-light.css'
 Vue.use(MuseUI)
 Vue.config.productionTip = false
 
+router.push('/todo')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
