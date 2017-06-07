@@ -82,7 +82,7 @@ export default {
     position relative
     overflow hidden
     .todo-item
-      transition all .4s
+      transition all .6s cubic-bezier(.23,1,.32,1)
     .todo-item-complete
       .mu-item
         color #9e9e9e
@@ -98,7 +98,7 @@ export default {
 .item-leave
   transform translateX(-100px)
 .item-enter-active
-  transition all .5s ease-in
+  transition all .6s cubic-bezier(.23,1,.32,1)
 .item-leave-active
   opacity 0
   position absolute
