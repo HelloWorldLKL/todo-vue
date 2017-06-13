@@ -4,9 +4,14 @@
     <mu-row gutter class="btn-row">
       <mu-col width="0" tablet="0" desktop="15">&nbsp;</mu-col>
       <mu-col width="100" tablet="100" desktop="70">
-        <router-link to="/logIn">
-          <mu-flat-button label="Log in" icon="account_box" primary/>
-        </router-link>
+        <transition name="fade" mode="out-in">
+          <router-link to="/logIn" v-if="!uID">
+            <mu-flat-button label="Log in" icon="account_box" primary/>
+          </router-link>
+          <router-link to="/logIn" v-if="uID">
+            <mu-flat-button v-if="uID" @click="logOut" label="Log off" icon="exit_to_app" primary/>
+          </router-link>
+        </transition>
       </mu-col>
       <mu-col width="0" tablet="0" desktop="15">&nbsp;</mu-col>
     </mu-row>
@@ -15,7 +20,7 @@
       <mu-col width="100" tablet="100" desktop="70">
         <mu-paper :zDepth="2">
           <transition name="fade" mode="out-in">
-            <router-view style="width:100%"></router-view>
+            <router-view style="width:100%" @log-in-success="updateUser" :uID="uID"></router-view>
           </transition>
         </mu-paper>
       </mu-col>
@@ -26,7 +31,22 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data() {
+    return {
+      uID: undefined,
+      infoArr: undefined
+    }
+  },
+  methods: {
+    updateUser() {
+      this.uID = this.$cookie.get('uID')
+    },
+    logOut() {
+      this.$cookie.delete('uID')
+      this.uID = undefined
+    }
+  }
 }
 </script>
 

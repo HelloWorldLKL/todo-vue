@@ -2,15 +2,18 @@
   <div class="sign-up">
     <h1 class="title">sign up</h1>
     <div class="text-area">
-      <mu-text-field v-model.trim="uName" label="user name" labelFloat fullWidth :errorText="uNameERR" @input="checkName" @blur="checkName"/>
-      <mu-text-field v-model.trim="uPwd1" label="password" type="password" labelFloat fullWidth :errorText="uPwd1ERR"  @input="checkPwd1" @blur="checkPwd1"/>
-      <mu-text-field v-model.trim="uPwd2" label="verify password" type="password" labelFloat fullWidth :errorText="uPwd2ERR"  @input="checkPwd2" @blur="checkPwd2"/>
+      <mu-text-field v-model.trim="uName" label="user name" labelFloat fullWidth :errorText="uNameERR" @input="checkName" @blur="checkName" />
+      <mu-text-field v-model.trim="uPwd1" label="password" type="password" labelFloat fullWidth :errorText="uPwd1ERR" @input="checkPwd1" @blur="checkPwd1" />
+      <mu-text-field v-model.trim="uPwd2" label="verify password" type="password" labelFloat fullWidth :errorText="uPwd2ERR" @input="checkPwd2" @blur="checkPwd2" />
     </div>
-    <router-link to="/logIn"><mu-raised-button label="sign up" class="sign-up-btn" primary/></router-link>
+    <router-link to="/logIn">
+      <mu-raised-button label="sign up" class="sign-up-btn" @click="singUp" primary/>
+    </router-link>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -45,6 +48,23 @@ export default {
         // console.log(`upwd1:  ${this.uPwd1}   upwd2:  ${this.uPwd2}`)
       } else {
         this.uPwd2ERR = undefined
+      }
+    },
+    singUp() {
+      this.$http.post('http://localhost:3000/api/addUser', qs.stringify(this.postObj), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((response) => {
+        console.log(this.postObj)
+      })
+    }
+  },
+  computed: {
+    postObj() {
+      return {
+        uName: this.uName,
+        uPassword: this.uPwd1
       }
     }
   }

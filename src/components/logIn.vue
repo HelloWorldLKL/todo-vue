@@ -2,18 +2,20 @@
   <div class="log-in">
     <h1 class="title">log in</h1>
     <div class="text-area">
-      <mu-text-field v-model.trim="uName" label="user name" labelFloat fullWidth :errorText="uNameERR" @input="checkName" @blur="checkName"/>
-      <mu-text-field v-model.trim="uPwd" label="password" type="password" labelFloat fullWidth :errorText="uPwdERR"  @input="checkPwd" @blur="checkPwd"/>
+      <mu-text-field v-model.trim="uName" label="user name" labelFloat fullWidth :errorText="uNameERR" @input="checkName" @blur="checkName" />
+      <mu-text-field v-model.trim="uPwd" label="password" type="password" labelFloat fullWidth :errorText="uPwdERR" @input="checkPwd" @blur="checkPwd" />
     </div>
     <p class="tips">
-      <mu-icon value="info" size="13"/>
-      You have no account? Click <router-link to="/signUp">here</router-link> to sign up.
+      <mu-icon value="info" :size="13" /> You have no account? Click
+      <router-link to="/signUp">here</router-link> to sign up.
     </p>
-    <router-link to="/todo"><mu-raised-button label="log in" class="log-in-btn" primary/></router-link>
+    <mu-raised-button label="log in" class="log-in-btn" primary @click="logIn" />
   </div>
 </template>
 
 <script>
+import qs from 'qs'
+import router from './../router/index.js'
 export default {
   data() {
     return {
@@ -36,6 +38,30 @@ export default {
         this.uPwdERR = `It can't be empty`
       } else {
         this.uPwdERR = undefined
+      }
+    },
+    logIn() {
+      this.$http.post('http://localhost:3000/api/checkUser', qs.stringify(this.postObj), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((response) => {
+        console.log(response.data)
+        if (response.data.code === '200') {
+          this.$cookie.set('uID', response.data.data[0].uID, 1)
+          this.$emit('log-in-success')
+          router.push('todo')
+        } else {
+          alert('ERR')
+        }
+      })
+    }
+  },
+  computed: {
+    postObj() {
+      return {
+        uName: this.uName,
+        uPassword: this.uPwd
       }
     }
   }
