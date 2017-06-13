@@ -9,7 +9,11 @@
       <mu-icon value="info" :size="13" /> You have no account? Click
       <router-link to="/signUp">here</router-link> to sign up.
     </p>
-    <mu-raised-button label="log in" class="log-in-btn" primary @click="logIn" />
+    <mu-raised-button label="log in" class="log-in-btn" primary @click="logIn"/>
+    <mu-dialog :open="dialog" title="Opps!" @close="closeDialog">
+      Your username or password is incorrect!
+      <mu-flat-button slot="actions" primary @click="closeDialog" label="OK" />
+    </mu-dialog>
   </div>
 </template>
 
@@ -22,7 +26,8 @@ export default {
       uName: '',
       uPwd: '',
       uNameERR: '',
-      uPwdERR: ''
+      uPwdERR: '',
+      dialog: false
     }
   },
   methods: {
@@ -52,9 +57,12 @@ export default {
           this.$emit('log-in-success')
           router.push('todo')
         } else {
-          alert('ERR')
+          this.dialog = true
         }
       })
+    },
+    closeDialog() {
+      this.dialog = false
     }
   },
   computed: {
