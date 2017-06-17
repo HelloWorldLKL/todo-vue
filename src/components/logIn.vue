@@ -9,7 +9,7 @@
       <mu-icon value="info" :size="13" /> You have no account? Click
       <router-link to="/signUp">here</router-link> to sign up.
     </p>
-    <mu-raised-button label="log in" class="log-in-btn" primary @click="logIn"/>
+    <mu-raised-button label="log in" class="log-in-btn" primary @click="logIn" :disabled="this.uNameERR !== undefined || this.uPwdERR !== undefined"/>
     <mu-dialog :open="dialog" title="Opps!" @close="closeDialog">
       Your username or password is incorrect!
       <mu-flat-button slot="actions" primary @click="closeDialog" label="OK" />

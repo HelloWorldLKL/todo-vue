@@ -6,14 +6,17 @@
       <mu-text-field v-model.trim="uPwd1" label="password" type="password" labelFloat fullWidth :errorText="uPwd1ERR" @input="checkPwd1" @blur="checkPwd1" />
       <mu-text-field v-model.trim="uPwd2" label="verify password" type="password" labelFloat fullWidth :errorText="uPwd2ERR" @input="checkPwd2" @blur="checkPwd2" />
     </div>
-    <router-link to="/logIn">
-      <mu-raised-button label="sign up" class="sign-up-btn" @click="singUp" primary/>
-    </router-link>
+    <mu-raised-button label="sign up" class="sign-up-btn" @click="singUp" :disabled="this.uNameERR !== undefined || this.uPwd1ERR !== undefined || this.uPwd2ERR !== undefined" primary/>
+    <mu-dialog :open="dialog" title="Opps!" @close="closeDialog">
+      Your username is repeat!
+      <mu-flat-button slot="actions" primary @click="closeDialog" label="OK" />
+    </mu-dialog>
   </div>
 </template>
 
 <script>
 import qs from 'qs'
+import router from './../router/index.js'
 export default {
   data() {
     return {
@@ -22,7 +25,8 @@ export default {
       uPwd2: '',
       uNameERR: '',
       uPwd1ERR: '',
-      uPwd2ERR: ''
+      uPwd2ERR: '',
+      dialog: false
     }
   },
   methods: {
@@ -56,8 +60,15 @@ export default {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((response) => {
-        console.log(this.postObj)
+        if (response.data.code === '200') {
+          router.push('logIn')
+        } else if (response.data.code === '100') {
+          this.dialog = true
+        }
       })
+    },
+    closeDialog() {
+      this.dialog = false
     }
   },
   computed: {
